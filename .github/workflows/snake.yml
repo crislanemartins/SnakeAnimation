@@ -1,0 +1,30 @@
+name: Generate Snake Animation
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  generate-snake:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Generate snake SVG
+        run: |
+          curl -s https://raw.githubusercontent.com/Platane/snk/output/github-contribution-grid-snake.svg > snake.svg
+          mkdir -p output
+          mv snake.svg ./output/
+          
+      - name: Commit and push snake image
+        uses: EndBug/add-and-commit@v7
+        with:
+          author_name: 'GitHub Actions'
+          author_email: 'actions@github.com'
+          message: 'Update snake animation'
+          add: 'output/snake.svg'
